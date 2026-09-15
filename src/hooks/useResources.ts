@@ -7,6 +7,7 @@ import type {
   Paginated,
   Reservation,
   ReservationStatus,
+  Service,
   User,
   UserRole,
 } from '@/types/api'
@@ -150,6 +151,50 @@ export function useDeleteUser() {
   })
 }
 
+// ---------- Services ----------
+
+export function useServices(params?: { barbershop_id?: number }) {
+  return useQuery({
+    queryKey: ['services', params],
+    queryFn: async () => {
+      const { data } = await api.get<Paginated<Service>>('/services', {
+        params: { per_page: 100, ...params },
+      })
+      return data
+    },
+  })
+}
+
+export function useCreateService() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      const { data } = await api.post('/services', payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['services'] }),
+  })
+}
+
+export function useUpdateService() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...payload }: Record<string, unknown> & { id: number }) => {
+      const { data } = await api.put(`/services/${id}`, payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['services'] }),
+  })
+}
+
+export function useDeleteService() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: number) => api.delete(`/services/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['services'] }),
+  })
+}
+
 // ---------- Clients ----------
 
 export function useClients() {
@@ -161,6 +206,36 @@ export function useClients() {
       })
       return data
     },
+  })
+}
+
+export function useCreateClient() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      const { data } = await api.post('/clients', payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['clients'] }),
+  })
+}
+
+export function useUpdateClient() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...payload }: Record<string, unknown> & { id: number }) => {
+      const { data } = await api.put(`/clients/${id}`, payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['clients'] }),
+  })
+}
+
+export function useDeleteClient() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: number) => api.delete(`/clients/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['clients'] }),
   })
 }
 
