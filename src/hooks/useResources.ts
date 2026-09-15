@@ -8,6 +8,8 @@ import type {
   Reservation,
   ReservationStatus,
   Service,
+  User,
+  UserRole,
 } from '@/types/api'
 
 const PER_PAGE = 15
@@ -97,6 +99,55 @@ export function useDeleteBarber() {
   return useMutation({
     mutationFn: async (id: number) => api.delete(`/barbers/${id}`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['barbers'] }),
+  })
+}
+
+// ---------- Users ----------
+
+export interface UserFilters {
+  search?: string
+  role?: UserRole
+}
+
+export function useUsers(filters: UserFilters = {}) {
+  return useQuery({
+    queryKey: ['users', filters],
+    queryFn: async () => {
+      const { data } = await api.get<Paginated<User>>('/users', {
+        params: { per_page: 100, ...filters },
+      })
+      return data
+    },
+  })
+}
+
+export function useCreateUser() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      const { data } = await api.post('/users', payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['users'] }),
+  })
+}
+
+export function useUpdateUser() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...payload }: Record<string, unknown> & { id: number }) => {
+      const { data } = await api.put(`/users/${id}`, payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['users'] }),
+  })
+}
+
+export function useDeleteUser() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: number) => api.delete(`/users/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['users'] }),
   })
 }
 

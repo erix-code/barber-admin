@@ -8,9 +8,22 @@ export interface Role {
 export interface User {
   id: number
   name: string
+  last_name: string | null
+  phone: string | null
   email: string
   roles: Role[]
+  created_at?: string | null
+  updated_at?: string | null
 }
+
+export type UserRole = 'admin' | 'owner' | 'barber' | 'client'
+
+export const USER_ROLES: { value: UserRole; label: string }[] = [
+  { value: 'admin', label: 'Administrador' },
+  { value: 'owner', label: 'Dueño' },
+  { value: 'barber', label: 'Barbero' },
+  { value: 'client', label: 'Cliente' },
+]
 
 export interface Barbershop {
   id: number
@@ -37,8 +50,9 @@ export interface Schedule {
 export interface Barber {
   id: number
   user_id: number
+  user: User | null
   barbershop_id: number
-  specialties: string | null
+  specialties: string[] | null
   bio: string | null
   is_active: boolean
   schedules: Schedule[] | null

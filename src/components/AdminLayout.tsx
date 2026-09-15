@@ -5,6 +5,7 @@ import {
   LogOut,
   Scissors,
   Settings2,
+  UserCog,
   Users,
   Store,
 } from 'lucide-react'
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { to: '/services', label: 'Servicios', icon: Settings2 },
   { to: '/clients', label: 'Clientes', icon: Users },
   { to: '/reservations', label: 'Reservas', icon: CalendarDays },
+  { to: '/users', label: 'Usuarios', icon: UserCog },
 ]
 
 export default function AdminLayout() {

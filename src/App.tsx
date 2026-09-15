@@ -12,6 +12,7 @@ import DashboardPage from '@/pages/DashboardPage'
 import LoginPage from '@/pages/LoginPage'
 import ReservationsPage from '@/pages/ReservationsPage'
 import ServicesPage from '@/pages/ServicesPage'
+import UsersPage from '@/pages/UsersPage'
 import './index.css'
 
 const queryClient = new QueryClient({
@@ -64,6 +65,7 @@ function AppRoutes() {
         <Route path="services" element={<ServicesPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="reservations" element={<ReservationsPage />} />
+        <Route path="users" element={<UsersPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
