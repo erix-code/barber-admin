@@ -11,7 +11,6 @@ import ClientsPage from '@/pages/ClientsPage'
 import DashboardPage from '@/pages/DashboardPage'
 import LoginPage from '@/pages/LoginPage'
 import ReservationsPage from '@/pages/ReservationsPage'
-import ServicesPage from '@/pages/ServicesPage'
 import UsersPage from '@/pages/UsersPage'
 import './index.css'
 
@@ -62,7 +61,6 @@ function AppRoutes() {
         <Route index element={<DashboardPage />} />
         <Route path="barbershops" element={<BarbershopsPage />} />
         <Route path="barbers" element={<BarbersPage />} />
-        <Route path="services" element={<ServicesPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="reservations" element={<ReservationsPage />} />
         <Route path="users" element={<UsersPage />} />

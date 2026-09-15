@@ -188,6 +188,12 @@ export default function BarbersPage() {
       if (editing) {
         await updateMutation.mutateAsync({
           id: editing.id,
+          user: {
+            name: form.user.name,
+            last_name: form.user.last_name || null,
+            phone: form.user.phone || null,
+            email: form.user.email,
+          },
           specialties,
           bio: form.bio || null,
           is_active: form.is_active,
@@ -360,12 +366,11 @@ export default function BarbersPage() {
             <DialogTitle>{editing ? 'Editar barbero' : 'Nuevo barbero'}</DialogTitle>
             <DialogDescription>
               {editing
-                ? 'Actualiza especialidades, bio, estado y horario semanal.'
+                ? 'Actualiza los datos del usuario, especialidades, estado y horario.'
                 : 'Se creará un usuario con rol barbero junto con el perfil del barbero.'}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!editing && (
               <div className="space-y-3 rounded-md border p-3">
                 <p className="text-sm font-medium">Datos del usuario</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -434,25 +439,31 @@ export default function BarbersPage() {
                     )}
                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="user_password">Contraseña</Label>
-                  <Input
-                    id="user_password"
-                    type="password"
-                    required
-                    minLength={8}
-                    value={form.user.password}
-                    onChange={(e) =>
-                      setForm({ ...form, user: { ...form.user, password: e.target.value } })
-                    }
-                    placeholder="Mínimo 8 caracteres"
-                  />
-                  {errors.password && (
-                    <p className="text-xs text-destructive">{errors.password}</p>
-                  )}
-                </div>
+                {!editing && (
+                  <div className="space-y-1.5">
+                    <Label htmlFor="user_password">Contraseña</Label>
+                    <Input
+                      id="user_password"
+                      type="password"
+                      required
+                      minLength={8}
+                      value={form.user.password}
+                      onChange={(e) =>
+                        setForm({ ...form, user: { ...form.user, password: e.target.value } })
+                      }
+                      placeholder="Mínimo 8 caracteres"
+                    />
+                    {errors.password && (
+                      <p className="text-xs text-destructive">{errors.password}</p>
+                    )}
+                  </div>
+                )}
+                {editing && (
+                  <p className="text-xs text-muted-foreground">
+                    Para cambiar la contraseña, usa el módulo de Usuarios.
+                  </p>
+                )}
               </div>
-            )}
 
             <div className="space-y-2">
               <Label htmlFor="barbershop_id">Barbería</Label>

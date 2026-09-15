@@ -1,7 +1,6 @@
 import {
   CalendarClock,
   CalendarDays,
-  CheckCircle2,
   Clock3,
   Scissors,
   Store,
@@ -11,12 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/contexts/AuthContext'
-import {
-  useBarbers,
-  useBarbershops,
-  useReservations,
-  useServices,
-} from '@/hooks/useResources'
+import { useBarbers, useBarbershops, useReservations } from '@/hooks/useResources'
 import { formatCurrency, formatDateTime, STATUS_CONFIG } from '@/lib/format'
 import type { ReservationStatus } from '@/types/api'
 
@@ -49,7 +43,6 @@ export default function DashboardPage() {
   const { user } = useAuth()
   const { data: shops, isLoading: shopsLoading } = useBarbershops()
   const { data: barbers, isLoading: barbersLoading } = useBarbers()
-  const { data: services, isLoading: servicesLoading } = useServices()
   const { data: reservations, isLoading: reservationsLoading } = useReservations()
 
   const reservationList = reservations?.data ?? []
@@ -68,8 +61,7 @@ export default function DashboardPage() {
     {} as Record<ReservationStatus, number>,
   )
 
-  const isLoading =
-    shopsLoading || barbersLoading || servicesLoading || reservationsLoading
+  const isLoading = shopsLoading || barbersLoading || reservationsLoading
 
   return (
     <div className="space-y-6">
@@ -99,12 +91,6 @@ export default function DashboardPage() {
             value={barbers?.meta.total ?? 0}
             icon={Scissors}
             hint={`${barbers?.data.filter((b) => b.is_active).length ?? 0} activos`}
-          />
-          <StatCard
-            title="Servicios"
-            value={services?.meta.total ?? 0}
-            icon={CheckCircle2}
-            hint={`${services?.data.filter((s) => s.is_active).length ?? 0} disponibles`}
           />
           <StatCard
             title="Reservas próximas"
