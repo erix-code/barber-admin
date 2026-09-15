@@ -11,9 +11,12 @@ export function formatCurrency(value: number | null | undefined): string {
 
 export function formatDateTime(iso: string | null | undefined): string {
   if (!iso) return '—'
+  // La API guarda horas "de negocio" en UTC naive (apertura, horarios de barberos,
+  // scheduled_at), así que se muestran tal cual sin convertir a la zona local.
   return new Intl.DateTimeFormat('es', {
     dateStyle: 'medium',
     timeStyle: 'short',
+    timeZone: 'UTC',
   }).format(new Date(iso))
 }
 

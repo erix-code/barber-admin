@@ -260,6 +260,28 @@ export function useReservations(filters: ReservationFilters = {}) {
   })
 }
 
+export function useCreateReservation() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      const { data } = await api.post('/reservations', payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['reservations'] }),
+  })
+}
+
+export function useUpdateReservation() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, ...payload }: Record<string, unknown> & { id: number }) => {
+      const { data } = await api.put(`/reservations/${id}`, payload)
+      return data
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['reservations'] }),
+  })
+}
+
 export function useUpdateReservationStatus() {
   const qc = useQueryClient()
   return useMutation({
